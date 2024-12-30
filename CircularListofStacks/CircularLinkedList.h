@@ -55,7 +55,7 @@ private:
 			return -1;
 	}
 
-	void EraseStacks()
+	/*void EraseStacks()
 	{
 		for (int i = PositionofCurrentNode() + 1; i < NumberofNodes(); i++)
 		{
@@ -75,7 +75,7 @@ private:
 			auxNode->m_stack.DrawStack(7); //0 = black; 3 = cyan; 7 = white;
 			auxNode = auxNode->m_next;
 		}
-	}
+	}*/
 
 public:
 
@@ -147,8 +147,6 @@ public:
 			m_head->m_prev = tail;
 
 			//memcpy(m_current->m_next, auxNode, sizeof(Node));
-			//EraseStacks();
-			//RedrawStacks();
 		}
 	}
 
@@ -166,12 +164,12 @@ public:
 			{
 				Node* auxNode = m_current;
 
+				if (m_current == m_head)
+					m_head = m_head->m_next;
+				
 				m_current->m_prev->m_next = m_current->m_next;
 				m_current->m_next->m_prev = m_current->m_prev;
 				m_current = m_current->m_next;
-				/*auxNode->m_next->m_prev = m_current;
-				m_current->m_next = auxNode->m_next;
-				m_current = auxNode;*/
 				auxNode = nullptr;
 
 				delete auxNode;
@@ -180,15 +178,17 @@ public:
 				Node* tail = m_current;
 				for (int i = PositionofCurrentNode(); i < NumberofNodes(); i++)
 				{
-					tail = tail->m_next;
-					tail->m_stack.set_StackXPos(6 + 10 * i);
 					tail->m_stack.DrawStack(0); //0 = black; 3 = cyan; 7 = white;
+					tail->m_stack.set_StackXPos(6 + 10 * i);
 					tail->m_stack.DrawStack(7); //0 = black; 3 = cyan; 7 = white;
+					if (tail->m_next!= m_head)
+						tail = tail->m_next;
 				}
 				m_head->m_prev = tail;
 
-				EraseStacks();
-				RedrawStacks();
+				m_current->m_stack.DrawStack(3); //0 = black; 3 = cyan; 7 = white;
+				/*EraseStacks();
+				RedrawStacks();*/
 			}			
 		}
 	}

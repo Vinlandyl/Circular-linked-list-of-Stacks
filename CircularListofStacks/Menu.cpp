@@ -63,11 +63,11 @@ void ManageUI()
 					std::cout << "You have reached the limit of 5 stacks" << std::endl;
 				}
 				break;
-			case 2:
-				gotoxy(2, 11);
-				std::cout << "                                                       " << std::endl;
+			case 2:				
 				if (!list->isEmpty())
 				{	
+					gotoxy(2, 11);
+					std::cout << "                                                       " << std::endl;
 					list->getCurrentNode()->m_stack.ScreenPush();
 					//node->getStack().Push(1);  //why is this not working?				
 					gotoxy(2, 11);
