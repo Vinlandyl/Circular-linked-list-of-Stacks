@@ -17,6 +17,8 @@ static void WriteMenu()
 	std::cout << "  8. Exit" << std::endl;
 	std::cout << std::endl;
 	std::cout << "  Press the number of the option you wish to select: " << std::endl;
+	gotoxy(0, 23);
+	std::cout << "  Move between stacks using the arrow keys. The current stack is highlighted in cyan." << std::endl;
 	//std::cout << "0123456789 123456789 123456789 123456789 123456789 123456789" << std::endl;
 }
 
@@ -39,7 +41,7 @@ static int ReadOption()
 
 void ManageUI()
 {
-	CircularLinkedList* list = new CircularLinkedList(6, 14);
+	CircularLinkedList* list = new CircularLinkedList(6, 15);
 	int option;
 
 	WriteMenu();	
@@ -66,7 +68,7 @@ void ManageUI()
 			case 2:				
 				if (!list->isEmpty())
 				{	
-					gotoxy(2, 11);
+					gotoxy(2, 12);
 					std::cout << "                                                       " << std::endl;
 					list->getCurrentNode()->m_stack.ScreenPush();
 					//node->getStack().Push(1);  //why is this not working?				

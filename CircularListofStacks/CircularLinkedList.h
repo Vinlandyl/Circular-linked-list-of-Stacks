@@ -87,7 +87,7 @@ public:
 
 	CircularLinkedList(int x, int y)
 	{
-		m_head = new Node(6, 14);
+		m_head = new Node(x, y);
 		m_head->m_prev = m_head;
 		m_head->m_next = m_head;
 		m_current = m_head;
@@ -115,7 +115,7 @@ public:
 	{
 		if (m_head == nullptr)
 		{
-			m_head = new Node(6, 14);
+			m_head = new Node(6, 15);
 			m_head->m_prev = m_head;
 			m_head->m_next = m_head;
 			m_current = m_head;
@@ -126,7 +126,7 @@ public:
 	{
 		if (NumberofNodes() < 6)
 		{
-			Node* auxNode = new Node(m_current->m_stack.get_StackXPos() + 10, 14);
+			Node* auxNode = new Node(m_current->m_stack.get_StackXPos() + 10, 15);
 			
 			m_current->m_next->m_prev = auxNode;
 			auxNode->m_prev = m_current;			
@@ -174,7 +174,6 @@ public:
 
 				delete auxNode;
 
-				/*this part is not working*/
 				Node* tail = m_current;
 				for (int i = PositionofCurrentNode(); i < NumberofNodes(); i++)
 				{
@@ -186,9 +185,7 @@ public:
 				}
 				m_head->m_prev = tail;
 
-				m_current->m_stack.DrawStack(3); //0 = black; 3 = cyan; 7 = white;
-				/*EraseStacks();
-				RedrawStacks();*/
+				m_current->m_stack.DrawStack(3); //0 = black; 3 = cyan; 7 = white;				
 			}			
 		}
 	}

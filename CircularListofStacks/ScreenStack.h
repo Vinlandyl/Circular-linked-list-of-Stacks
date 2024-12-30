@@ -57,7 +57,8 @@ public:
 		if (!isFull())
 		{
 			gotoxy(2, 11);
-			std::cout << "Press the number you wish to push into the stack";
+			std::cout << "Press the number you wish to push into the stack    ";
+			gotoxy(50, 11);
 			do
 			{
 				number = _getch() - 48; //converts char to interger
