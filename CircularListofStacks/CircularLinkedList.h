@@ -28,7 +28,7 @@ public:
 	ScreenStack getStack()
 	{
 		return m_stack;
-	}
+	}	
 };
 
 class CircularLinkedList
@@ -53,29 +53,7 @@ private:
 		}
 		else
 			return -1;
-	}
-
-	/*void EraseStacks()
-	{
-		for (int i = PositionofCurrentNode() + 1; i < NumberofNodes(); i++)
-		{
-			Node* auxNode = m_current->m_next;
-			
-			auxNode->m_stack.DrawStack(0); //0 = black; 3 = cyan; 7 = white;
-			auxNode = auxNode->m_next;
-		}
-	}
-
-	void RedrawStacks()
-	{
-		for (int i = PositionofCurrentNode() + 1; i < NumberofNodes(); i++)
-		{
-			Node* auxNode = m_current->m_next;
-
-			auxNode->m_stack.DrawStack(7); //0 = black; 3 = cyan; 7 = white;
-			auxNode = auxNode->m_next;
-		}
-	}*/
+	}	
 
 public:
 
@@ -90,6 +68,7 @@ public:
 		m_head = new Node(x, y);
 		m_head->m_prev = m_head;
 		m_head->m_next = m_head;
+		m_current = new Node(x, y);
 		m_current = m_head;
 	}
 
@@ -118,6 +97,7 @@ public:
 			m_head = new Node(6, 15);
 			m_head->m_prev = m_head;
 			m_head->m_next = m_head;
+			m_current = new Node(6, 15);
 			m_current = m_head;
 		}
 	}
@@ -145,7 +125,7 @@ public:
 				tail->m_stack.DrawStack(7); //0 = black; 3 = cyan; 7 = white;
 			}
 			m_head->m_prev = tail;
-
+			
 			//memcpy(m_current->m_next, auxNode, sizeof(Node));
 		}
 	}
@@ -172,8 +152,6 @@ public:
 				m_current = m_current->m_next;
 				auxNode = nullptr;
 
-				delete auxNode;
-
 				Node* tail = m_current;
 				for (int i = PositionofCurrentNode(); i < NumberofNodes(); i++)
 				{
@@ -184,7 +162,7 @@ public:
 						tail = tail->m_next;
 				}
 				m_head->m_prev = tail;
-
+				
 				m_current->m_stack.DrawStack(3); //0 = black; 3 = cyan; 7 = white;				
 			}			
 		}
@@ -225,7 +203,9 @@ public:
 
 	~CircularLinkedList()
 	{
-		/*delete m_head;
-		delete m_current;*/
+		m_head = nullptr;
+		delete m_head;
+		m_current = nullptr;
+		delete m_current;
 	}
 };

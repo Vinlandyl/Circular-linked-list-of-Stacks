@@ -41,10 +41,10 @@ static int ReadOption()
 
 void ManageUI()
 {
-	CircularLinkedList* list = new CircularLinkedList(6, 15);
+	CircularLinkedList list = CircularLinkedList(6, 15);
 	int option;
 
-	WriteMenu();	
+	WriteMenu();
 	do
 	{	option = ReadOption();
 		gotoxy(2, 12);
@@ -55,10 +55,10 @@ void ManageUI()
 			switch (option)
 			{
 			case 1:
-				if (list->NumberofNodes() == 0)
-					list->InsertatBeginning();
-				else if (list->NumberofNodes() < 5)
-					list->InsertatPosition();					
+				if (list.NumberofNodes() == 0)
+					list.InsertatBeginning();
+				else if (list.NumberofNodes() < 5)
+					list.InsertatPosition();					
 				else
 				{
 					gotoxy(2, 12);
@@ -66,12 +66,12 @@ void ManageUI()
 				}
 				break;
 			case 2:				
-				if (!list->isEmpty())
+				if (!list.isEmpty())
 				{	
 					gotoxy(2, 12);
 					std::cout << "                                                       " << std::endl;
-					list->getCurrentNode()->m_stack.ScreenPush();
-					//node->getStack().Push(1);  //why is this not working?				
+					list.getCurrentNode()->m_stack.ScreenPush();
+					//node->getStack().Push(1);  //why is this not working?			
 					gotoxy(2, 11);
 					std::cout << "Press the number of the option you wish to select: " << std::endl;
 				}
@@ -82,8 +82,8 @@ void ManageUI()
 				}
 				break;
 			case 3:
-				if (!list->isEmpty())
-					list->getCurrentNode()->m_stack.ScreenPop();
+				if (!list.isEmpty())
+					list.getCurrentNode()->m_stack.ScreenPop();
 				else
 				{
 					gotoxy(2, 12);
@@ -91,8 +91,8 @@ void ManageUI()
 				}
 				break;
 			case 4:
-				if (!list->isEmpty())
-					list->getCurrentNode()->m_stack.ScreenPeek();
+				if (!list.isEmpty())
+					list.getCurrentNode()->m_stack.ScreenPeek();
 				else
 				{
 					gotoxy(2, 12);
@@ -100,8 +100,8 @@ void ManageUI()
 				}
 				break;
 			case 5:
-				if (!list->isEmpty())
-					list->getCurrentNode()->m_stack.ScreenisFull();
+				if (!list.isEmpty())
+					list.getCurrentNode()->m_stack.ScreenisFull();
 				else
 				{
 					gotoxy(2, 12);
@@ -109,8 +109,8 @@ void ManageUI()
 				}
 				break;
 			case 6:
-				if (!list->isEmpty())
-					list->getCurrentNode()->m_stack.ScreenisEmpty();
+				if (!list.isEmpty())
+					list.getCurrentNode()->m_stack.ScreenisEmpty();
 				else
 				{
 					gotoxy(2, 12);
@@ -118,8 +118,8 @@ void ManageUI()
 				}
 				break;
 			case 7:
-				if (!list->isEmpty())
-					list->DeleteatPosition();
+				if (!list.isEmpty())
+					list.DeleteatPosition();
 				else
 				{
 					gotoxy(2, 12);
@@ -127,17 +127,16 @@ void ManageUI()
 				}
 				break;
 			case 75:
-				if (!list->isEmpty())
-					list->MovetoPrevious();				
+				if (!list.isEmpty())
+					list.MovetoPrevious();
 				break;
 			case 77:
-				if (!list->isEmpty())
-					list->MovetoNext();
+				if (!list.isEmpty())
+					list.MovetoNext();
 				break;
 			}
 			gotoxy(53, 11);
-			std::cout << " " << std::endl;			
-		}		
-	} while (option != 8);	
-	delete list;
+			std::cout << " " << std::endl;	
+		}
+	} while (option != 8);
 }
