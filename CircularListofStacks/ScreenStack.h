@@ -3,38 +3,40 @@
 #include <windows.h>
 #include "BasicStack.h"
 #include "MoveCursor.h"
+#include "Colours.cpp"
 
 class ScreenStack : public BasicStack
 {
-	int m_x, m_y;
-	HANDLE m_hConsole;
+private:
+	int x_, y_;
+	HANDLE hConsole_;
 
-public:
+public:	
 	void DrawStack(int color)
 	{
-		SetConsoleTextAttribute(m_hConsole, color); //0 = black; 3 = cyan; 7 = white;
+		SetConsoleTextAttribute(hConsole_, color); //0 = black; 3 = cyan; 7 = white;
 		for (int i = 0; i < 5; i++)
 		{
-			gotoxy(m_x, m_y + i);
+			gotoxy(x_, y_ + i);
 			std::cout << (char)186 << "   " << (char)186; //Vertical line
 		}
-		gotoxy(m_x, m_y + 5);
+		gotoxy(x_, y_ + 5);
 		std::cout << (char)200;  //Bottom left corner
 
 		for (int i = 1; i < 4; i++)
 		{
-			gotoxy(m_x + i, m_y + 5);
+			gotoxy(x_ + i, y_ + 5);
 			std::cout << (char)205;  //Bottom line
 		}
 		std::cout << (char)188; //Bottom right corner
 
 		if (!isEmpty())
-			for (int i = 0; i <= m_position; i++)
+			for (int i = 0; i <= position_; i++)
 			{
-				gotoxy(m_x + 2, m_y + 4 - i);
-				std::cout << m_elements[i];
+				gotoxy(x_ + 2, y_ + 4 - i);
+				std::cout << elements_[i];
 			}
-		SetConsoleTextAttribute(m_hConsole, 7); //0 = black; 3 = cyan; 7 = white;
+		SetConsoleTextAttribute(hConsole_, WHITE);
 	}
 
 public:
@@ -43,90 +45,48 @@ public:
 	
 	ScreenStack(int x, int y)
 	{
-		m_x = x;
-		m_y = y;
-		m_hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+		x_ = x;
+		y_ = y;
+		hConsole_ = GetStdHandle(STD_OUTPUT_HANDLE);
 
-		DrawStack(3); //3 = cyan
+		DrawStack(CYAN);
 	}
 
-	void ScreenPush()
+	void Push(int number) override
 	{
-		int number;
-
 		if (!isFull())
 		{
-			gotoxy(2, 11);
-			std::cout << "Press the number you wish to push into the stack    ";
-			gotoxy(50, 11);
-			do
-			{
-				number = _getch() - 48; //converts char to interger
-			} while (number < 0 || number > 9);
-			
-			Push(number);
-			gotoxy(m_x + 2, m_y + 4 - m_position);
-			SetConsoleTextAttribute(m_hConsole, 3); //3 = cyan
+			position_++;
+			elements_[position_] = number;
+			gotoxy(x_ + 2, y_ + 4 - position_);
+			SetConsoleTextAttribute(hConsole_, CYAN);
 			std::cout << Peek();
-			SetConsoleTextAttribute(m_hConsole, 7); //7 = white
-		}
-		else
-		{
-			gotoxy(2, 12);
-			std::cout << "Can not add new elements. This stack is already full.";
+			SetConsoleTextAttribute(hConsole_, WHITE);
 		}
 	}
 
-	void ScreenPop()
+	int Pop() override
 	{
-		gotoxy(2, 12);
 		if (!isEmpty())
 		{
-			std::cout << "The poped number is: " << Pop() << std::endl;
-			
-			gotoxy(m_x + 2, m_y + 3 - m_position);
-			SetConsoleTextAttribute(m_hConsole, 0); //0 = black
+			position_--;
+			gotoxy(x_ + 2, y_ + 3 - position_);
+			SetConsoleTextAttribute(hConsole_, BLACK);
 			std::cout << " ";
-			SetConsoleTextAttribute(m_hConsole, 7); //7 = white
+			SetConsoleTextAttribute(hConsole_, WHITE);
+			return elements_[position_ + 1];
 		}
 		else
-			std::cout << "Can not pop elements from the stack. This stack is already empty.";
+			return -1;
 	}
-
-	void ScreenPeek()
-	{
-		gotoxy(2, 12);
-		if (!isEmpty())
-			std::cout << "The number at the top of the stack is: " << Peek() << std::endl;			
-		else
-			std::cout << "This stack is empty.";
-	}
-
-	void ScreenisFull()
-	{
-		gotoxy(2, 12);
-		if (isFull())
-			std::cout << "This stack is full.";
-		else
-			std::cout << "This stack is not full.";
-	}
-
-	void ScreenisEmpty()
-	{
-		gotoxy(2, 12);
-		if (isEmpty())
-			std::cout << "This stack is empty.";
-		else
-			std::cout << "This stack is not empty.";
-	}
-
+	
 	int get_StackXPos() const
 	{
-		return m_x;
+		return x_;
 	}
 
 	void set_StackXPos(int x)
 	{
-		m_x = x;
+		x_ = x;
 	}
 };

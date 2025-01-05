@@ -1,52 +1,23 @@
 #pragma once
-#include "ScreenStack.h"
-
-//class CircularLinkedList;
-
-class Node
-{
-//friend class CircularLinkedList;
-public:
-	ScreenStack m_stack;
-	Node* m_prev;
-	Node* m_next;
-
-public:
-	Node ()
-	{
-		m_prev = nullptr;
-		m_next = nullptr;
-	}
-	
-	Node(int x, int y)
-	{
-		m_stack = ScreenStack(x,y);
-		m_prev = nullptr;
-		m_next = nullptr;
-	}
-
-	ScreenStack getStack()
-	{
-		return m_stack;
-	}	
-};
+#include "Node.h"
 
 class CircularLinkedList
 {
-	Node* m_head;
-	Node* m_current;
+private:
+	Node* head_;
+	Node* current_;
 
 private:
 	int PositionofCurrentNode()
 	{
-		if (m_head != nullptr)
+		if (head_ != nullptr)
 		{
-			Node* auxNode = m_head;
+			Node* auxNode = head_;
 			int position = 0;
 
-			while (auxNode != m_current)
+			while (auxNode != current_)
 			{
-				auxNode = auxNode->m_next;
+				auxNode = auxNode->getNextNode();
 				position++;
 			}
 			return position;
@@ -59,31 +30,31 @@ public:
 
 	CircularLinkedList()
 	{
-		m_head = nullptr;
-		m_current = nullptr;
+		head_ = nullptr;
+		current_ = nullptr;
 	}
 
 	CircularLinkedList(int x, int y)
 	{
-		m_head = new Node(x, y);
-		m_head->m_prev = m_head;
-		m_head->m_next = m_head;
-		m_current = new Node(x, y);
-		m_current = m_head;
+		head_ = new Node(x, y);		
+		head_->setPrevNode(*head_);
+		head_->setNextNode(*head_);
+		current_ = new Node(x, y);
+		current_ = head_;
 	}
 
 	int NumberofNodes()
 	{
-		if (m_head == nullptr)
+		if (head_ == nullptr)
 			return 0;
 		else
 		{
-			Node* auxNode = m_head;
+			Node* auxNode = head_;
 			int counter = 1;
 
-			while (m_head != auxNode->m_next && counter < 5)
+			while (head_ != auxNode->getNextNode() && counter < 5)
 			{
-				auxNode = auxNode->m_next;
+				auxNode = auxNode->getNextNode();
 				counter++;
 			}
 			return counter;
@@ -92,13 +63,13 @@ public:
 
 	void InsertatBeginning()
 	{
-		if (m_head == nullptr)
+		if (head_ == nullptr)
 		{
-			m_head = new Node(6, 15);
-			m_head->m_prev = m_head;
-			m_head->m_next = m_head;
-			m_current = new Node(6, 15);
-			m_current = m_head;
+			head_ = new Node(6, 15);
+			head_->setPrevNode(*head_);
+			head_->setNextNode(*head_);
+			current_ = new Node(6, 15);
+			current_ = head_;
 		}
 	}
 
@@ -106,91 +77,91 @@ public:
 	{
 		if (NumberofNodes() < 6)
 		{
-			Node* auxNode = new Node(m_current->m_stack.get_StackXPos() + 10, 15);
+			Node* auxNode = new Node(current_->getStack().get_StackXPos() + 10, 15);
 			
-			m_current->m_next->m_prev = auxNode;
-			auxNode->m_prev = m_current;			
-			auxNode->m_next = m_current->m_next;
-			m_current->m_next = auxNode;
+			current_->getNextNode()->setPrevNode(*auxNode);
+			auxNode->setPrevNode(*current_);			
+			auxNode->setNextNode(*current_->getNextNode());
+			current_->setNextNode(*auxNode);
 			auxNode = nullptr;
 
 			delete auxNode;
 			
-			Node* tail = m_current;
+			Node* tail = current_;
 			for (int i = PositionofCurrentNode() + 1; i < NumberofNodes(); i++)
 			{
-				tail = tail->m_next;
-				tail->m_stack.set_StackXPos(6 + 10 * i);
-				tail->m_stack.DrawStack(0); //0 = black; 3 = cyan; 7 = white;
-				tail->m_stack.DrawStack(7); //0 = black; 3 = cyan; 7 = white;
+				tail = tail->getNextNode();				
+				tail->setStackXPos(6 + 10 * i);				
+				tail->getStack().DrawStack(WHITE);
 			}
-			m_head->m_prev = tail;
+			head_->setPrevNode(*tail);
 			
-			//memcpy(m_current->m_next, auxNode, sizeof(Node));
+			//memcpy(current_->getNextNode(), auxNode, sizeof(Node));
 		}
 	}
 
 	void DeleteatPosition()
 	{
-		if (m_head != nullptr)
+		if (head_ != nullptr)
 		{
-			m_current->m_stack.DrawStack(0); //0 = black; 3 = cyan; 7 = white;
+			current_->getStack().DrawStack(BLACK);
 			if (NumberofNodes() == 1)
 			{
-				m_head = nullptr;
-				m_current = nullptr;
+				head_ = nullptr;
+				current_ = nullptr;
 			}
 			else
 			{
-				Node* auxNode = m_current;
+				Node* auxNode = current_;
 
-				if (m_current == m_head)
-					m_head = m_head->m_next;
+				if (current_ == head_)
+					head_ = head_->getNextNode();
 				
-				m_current->m_prev->m_next = m_current->m_next;
-				m_current->m_next->m_prev = m_current->m_prev;
-				m_current = m_current->m_next;
+				current_->getPrevNode()->setNextNode(*current_->getNextNode());
+				current_->getNextNode()->setPrevNode(*current_->getPrevNode());
+				current_ = current_->getNextNode();
 				auxNode = nullptr;
 
-				Node* tail = m_current;
+				Node* tail = current_;
 				for (int i = PositionofCurrentNode(); i < NumberofNodes(); i++)
 				{
-					tail->m_stack.DrawStack(0); //0 = black; 3 = cyan; 7 = white;
-					tail->m_stack.set_StackXPos(6 + 10 * i);
-					tail->m_stack.DrawStack(7); //0 = black; 3 = cyan; 7 = white;
-					if (tail->m_next!= m_head)
-						tail = tail->m_next;
+					tail->getStack().DrawStack(BLACK);
+					//tail->stack_.set_StackXPos(6 + 10 * i);
+					tail->setStackXPos(6 + 10 * i);
+					tail->getStack().DrawStack(WHITE);
+					if (tail->getNextNode()!= head_)
+						tail = tail->getNextNode();
 				}
-				m_head->m_prev = tail;
+				head_->setPrevNode(*tail);
 				
-				m_current->m_stack.DrawStack(3); //0 = black; 3 = cyan; 7 = white;				
+				current_->getStack().DrawStack(CYAN);
 			}			
 		}
 	}
 
 	void MovetoNext()
 	{
-		if (m_current->m_next != nullptr)
+		if (current_->getNextNode() != nullptr)
 		{
-			m_current->m_stack.DrawStack(7); //0 = black; 3 = cyan; 7 = white;
-			m_current = m_current->m_next;
-			m_current->m_stack.DrawStack(3); //0 = black; 3 = cyan; 7 = white;
+			current_->getStack().DrawStack(WHITE);
+			current_ = current_->getNextNode();
+			current_->getStack().DrawStack(CYAN);
 		}			
 	}
 	
 	void MovetoPrevious()
 	{
-		if (m_current->m_prev != nullptr)
+		if (current_->getPrevNode() != nullptr)
 		{
-			m_current->m_stack.DrawStack(7); //0 = black; 3 = cyan; 7 = white;
-			m_current = m_current->m_prev;
-			m_current->m_stack.DrawStack(3); //0 = black; 3 = cyan; 7 = white;
+			current_->getStack().DrawStack(WHITE);
+			current_ = current_->getPrevNode();
+			current_->getStack().DrawStack(CYAN);
 		}			
 	}
 
 	bool isEmpty() const
 	{
-		if (m_head == nullptr)
+		if (head_ == nullptr)
 			return true;
 		else
 			return false;
@@ -198,14 +169,14 @@ public:
 
 	Node* getCurrentNode() const
 	{
-		return m_current;
+		return current_;
 	}
 
 	~CircularLinkedList()
 	{
-		m_head = nullptr;
-		delete m_head;
-		m_current = nullptr;
-		delete m_current;
+		head_ = nullptr;
+		delete head_;
+		current_ = nullptr;
+		delete current_;
 	}
 };

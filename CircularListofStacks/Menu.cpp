@@ -1,6 +1,5 @@
 #include <conio.h>
 #include "CircularLinkedList.h"
-#include "ScreenStack.h"
 
 static void WriteMenu()
 {
@@ -39,6 +38,131 @@ static int ReadOption()
 	}	
 }
 
+static void ManageNewNode(CircularLinkedList& list)
+{
+	if (list.NumberofNodes() == 0)
+		list.InsertatBeginning();
+	else if (list.NumberofNodes() < 5)
+		list.InsertatPosition();
+	else
+	{
+		gotoxy(2, 12);
+		std::cout << "You have reached the limit of 5 stacks" << std::endl;
+	}
+}
+
+static void ManageStackPush(CircularLinkedList& list)
+{
+	int number;
+
+	gotoxy(2, 12);
+	std::cout << "                                                       " << std::endl;
+	if (!list.getCurrentNode()->getStack().isFull())
+	{
+		gotoxy(2, 11);
+		std::cout << "Press the number you wish to push into the stack    ";
+		gotoxy(50, 11);
+		do
+		{
+			number = _getch() - 48; //converts char to interger
+		} while (number < 0 || number > 9);
+		list.getCurrentNode()->StackPush(number);
+	}
+	else
+	{
+		gotoxy(2, 12);
+		std::cout << "Can not add new elements. This stack is already full.";
+	}	
+	gotoxy(2, 11);
+	std::cout << "Press the number of the option you wish to select: " << std::endl;
+}
+
+static void ManageStackPop(CircularLinkedList& list)
+{
+	if (!list.getCurrentNode()->getStack().isEmpty())
+	{
+		int number = list.getCurrentNode()->StackPop();
+		gotoxy(2, 12);
+		std::cout << "The poped number is: " << number << std::endl;
+	}
+	else
+	{
+		gotoxy(2, 12);
+		std::cout << "Can not pop elements from the stack. This stack is already empty.";
+	}		
+}
+
+static void ManageStackPeek(CircularLinkedList& list)
+{
+	gotoxy(2, 12);
+	if (!list.getCurrentNode()->getStack().isEmpty())
+		std::cout << "The number at the top of the stack is: " << list.getCurrentNode()->getStack().Peek() << std::endl;
+	else
+		std::cout << "This stack is empty.";
+}
+
+static void ManageStackisFull(CircularLinkedList& list)
+{
+	gotoxy(2, 12);
+	if (list.getCurrentNode()->getStack().isFull())
+		std::cout << "This stack is full.";
+	else
+		std::cout << "This stack is not full.";
+}
+
+static void ManageStackisEmpty(CircularLinkedList& list)
+{
+	gotoxy(2, 12);
+	if (list.getCurrentNode()->getStack().isEmpty())
+		std::cout << "This stack is empty.";
+	else
+		std::cout << "This stack is not empty.";
+}
+
+static void ManageUserSelection(CircularLinkedList& list, int option)
+{
+	if (option == 1)
+		ManageNewNode(list);
+	else if (option > 1 && option < 8 || option == 75 /*left arrow*/ || option == 77 /*right arrow*/)
+	{
+		if (!list.isEmpty())
+		{
+			switch (option)
+			{
+			case 2:
+				ManageStackPush(list);
+				break;
+			case 3:				
+				ManageStackPop(list);
+				break;
+			case 4:
+				ManageStackPeek(list);
+				break;
+			case 5:
+				ManageStackisFull(list);
+				break;
+			case 6:
+				ManageStackisEmpty(list);
+				break;
+			case 7:
+				list.DeleteatPosition();
+				break;
+			case 75:
+				list.MovetoPrevious();
+				break;
+			case 77:
+				list.MovetoNext();
+				break;
+			}
+		}
+		else
+		{
+			gotoxy(2, 12);
+			std::cout << "There are no stacks on the list" << std::endl;
+		}
+	}	
+}
+
 void ManageUI()
 {
 	CircularLinkedList list = CircularLinkedList(6, 15);
@@ -49,94 +173,8 @@ void ManageUI()
 	{	option = ReadOption();
 		gotoxy(2, 12);
 		std::cout << "                                                                 " << std::endl;
-	    
-		if (option > 0 && option < 8 || option == 75 /*left arrow*/ || option == 77 /*right arrow*/)
-		{
-			switch (option)
-			{
-			case 1:
-				if (list.NumberofNodes() == 0)
-					list.InsertatBeginning();
-				else if (list.NumberofNodes() < 5)
-					list.InsertatPosition();					
-				else
-				{
-					gotoxy(2, 12);
-					std::cout << "You have reached the limit of 5 stacks" << std::endl;
-				}
-				break;
-			case 2:				
-				if (!list.isEmpty())
-				{	
-					gotoxy(2, 12);
-					std::cout << "                                                       " << std::endl;
-					list.getCurrentNode()->m_stack.ScreenPush();
-					//node->getStack().Push(1);  //why is this not working?			
-					gotoxy(2, 11);
-					std::cout << "Press the number of the option you wish to select: " << std::endl;
-				}
-				else
-				{
-					gotoxy(2, 12);
-					std::cout << "There are no stacks on the list" << std::endl;
-				}
-				break;
-			case 3:
-				if (!list.isEmpty())
-					list.getCurrentNode()->m_stack.ScreenPop();
-				else
-				{
-					gotoxy(2, 12);
-					std::cout << "There are no stacks on the list" << std::endl;
-				}
-				break;
-			case 4:
-				if (!list.isEmpty())
-					list.getCurrentNode()->m_stack.ScreenPeek();
-				else
-				{
-					gotoxy(2, 12);
-					std::cout << "There are no stacks on the list" << std::endl;
-				}
-				break;
-			case 5:
-				if (!list.isEmpty())
-					list.getCurrentNode()->m_stack.ScreenisFull();
-				else
-				{
-					gotoxy(2, 12);
-					std::cout << "There are no stacks on the list" << std::endl;
-				}
-				break;
-			case 6:
-				if (!list.isEmpty())
-					list.getCurrentNode()->m_stack.ScreenisEmpty();
-				else
-				{
-					gotoxy(2, 12);
-					std::cout << "There are no stacks on the list" << std::endl;
-				}
-				break;
-			case 7:
-				if (!list.isEmpty())
-					list.DeleteatPosition();
-				else
-				{
-					gotoxy(2, 12);
-					std::cout << "There are no stacks on the list" << std::endl;
-				}
-				break;
-			case 75:
-				if (!list.isEmpty())
-					list.MovetoPrevious();
-				break;
-			case 77:
-				if (!list.isEmpty())
-					list.MovetoNext();
-				break;
-			}
-			gotoxy(53, 11);
-			std::cout << " " << std::endl;	
-		}
-	} while (option != 8);
+	    ManageUserSelection(list, option);
+		gotoxy(53, 11);
+		std::cout << " " << std::endl;		
+	} while (option != 8);	
 }

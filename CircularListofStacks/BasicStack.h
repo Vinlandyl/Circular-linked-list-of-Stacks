@@ -3,32 +3,32 @@
 class BasicStack
 {
 protected:
-	int m_elements[5];
-	int m_position;
+	int elements_[5];
+	int position_;
 
 public:
 	BasicStack()
 	{
-		m_position = -1;
+		position_ = -1;
 		/*for ()
-			m_elements[i] = 0;*/
+			elements_[i] = 0;*/
 	}
 
-	void Push(int number)
+	virtual void Push(int number)
 	{
 		if (!isFull())
 		{
-			m_position++;
-			m_elements[m_position] = number;
+			position_++;
+			elements_[position_] = number;
 		}
 	}
 
-	int Pop()
+	virtual int Pop()
 	{
 		if (!isEmpty())
 		{
-			m_position--;
-			return m_elements[m_position + 1];
+			position_--;
+			return elements_[position_ + 1];
 		}
 		else
 			return -1;
@@ -38,7 +38,7 @@ public:
 	{
 		if (!isEmpty())
 		{
-			return m_elements[m_position];
+			return elements_[position_];
 		}
 		else
 			return -1;
@@ -46,7 +46,7 @@ public:
 
 	bool isFull() const
 	{
-		if (m_position == 4)
+		if (position_ == 4)
 			return true;
 		else
 			return false;
@@ -55,7 +55,7 @@ public:
 
 	bool isEmpty() const
 	{
-		if (m_position == -1)
+		if (position_ == -1)
 			return true;
 		else
 			return false;
