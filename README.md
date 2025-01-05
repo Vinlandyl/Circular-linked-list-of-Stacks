@@ -8,3 +8,5 @@ To keep the project simple to visually test, the project has the following limit
 
 This way, the user can easily test stack operations such as checking if the stack is full, empty, or trying to push an element to a full stack.
 Similarly, the limitation of nodes to 5, makes it easier to test how the list behaves when nodes get inserted or deleted, especially when the list is full or empty.
+
+Thank you for taking the time to check my project!!
