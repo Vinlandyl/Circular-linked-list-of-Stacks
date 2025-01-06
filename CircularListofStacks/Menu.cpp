@@ -66,7 +66,7 @@ static void ManageStackPush(CircularLinkedList& list)
 		{
 			number = _getch() - 48; //converts char to interger
 		} while (number < 0 || number > 9);
-		list.getCurrentNode()->StackPush(number);
+		list.getCurrentNode()->getStack().Push(number);
 	}
 	else
 	{
@@ -81,7 +81,7 @@ static void ManageStackPop(CircularLinkedList& list)
 {
 	if (!list.getCurrentNode()->getStack().isEmpty())
 	{
-		int number = list.getCurrentNode()->StackPop();
+		int number = list.getCurrentNode()->getStack().Pop();
 		gotoxy(2, 12);
 		std::cout << "The poped number is: " << number << std::endl;
 	}

@@ -4,7 +4,7 @@
 class Node
 {
 private:
-	ScreenStack stack_;
+	ScreenStack stack_; //change to object of type T. Then instantiate a Node<ScreenStack>
 	Node* prevNode_;
 	Node* nextNode_;
 
@@ -23,24 +23,9 @@ public:
 		nextNode_ = nullptr;
 	}
 
-	ScreenStack getStack() const
+	ScreenStack& getStack() //change to getHoldObject should return a reference to type T object
 	{
 		return stack_;
-	}
-
-	void setStackXPos(int x)
-	{
-		stack_.set_StackXPos(x);
-	}
-
-	void StackPush(int number)
-	{
-		stack_.Push(number);
-	}
-
-	int StackPop()
-	{
-		return stack_.Pop();
 	}
 
 	Node* getPrevNode() const

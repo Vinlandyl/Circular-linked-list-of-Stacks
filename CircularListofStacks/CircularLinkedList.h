@@ -36,7 +36,7 @@ public:
 
 	CircularLinkedList(int x, int y)
 	{
-		head_ = new Node(x, y);		
+		head_ = new Node(x, y);
 		head_->setPrevNode(*head_);
 		head_->setNextNode(*head_);
 		current_ = new Node(x, y);
@@ -90,8 +90,8 @@ public:
 			Node* tail = current_;
 			for (int i = PositionofCurrentNode() + 1; i < NumberofNodes(); i++)
 			{
-				tail = tail->getNextNode();				
-				tail->setStackXPos(6 + 10 * i);				
+				tail = tail->getNextNode();
+				tail->getStack().set_StackXPos(6 + 10 * i);
 				tail->getStack().DrawStack(WHITE);
 			}
 			head_->setPrevNode(*tail);
@@ -126,8 +126,7 @@ public:
 				for (int i = PositionofCurrentNode(); i < NumberofNodes(); i++)
 				{
 					tail->getStack().DrawStack(BLACK);
-					//tail->stack_.set_StackXPos(6 + 10 * i);
-					tail->setStackXPos(6 + 10 * i);
+					tail->getStack().set_StackXPos(6 + 10 * i);
 					tail->getStack().DrawStack(WHITE);
 					if (tail->getNextNode()!= head_)
 						tail = tail->getNextNode();
