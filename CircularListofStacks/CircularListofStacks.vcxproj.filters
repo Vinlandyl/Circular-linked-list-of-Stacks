@@ -27,8 +27,8 @@
     <ClCompile Include="BasicStack.h">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="Colours.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Colours.h">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

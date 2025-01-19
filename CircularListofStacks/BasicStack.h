@@ -9,9 +9,7 @@ protected:
 public:
 	BasicStack()
 	{
-		position_ = -1;
-		/*for ()
-			elements_[i] = 0;*/
+		position_ = -1;		
 	}
 
 	virtual void Push(int number)

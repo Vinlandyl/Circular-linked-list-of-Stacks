@@ -3,7 +3,7 @@
 #include <windows.h>
 #include "BasicStack.h"
 #include "MoveCursor.h"
-#include "Colours.cpp"
+#include "Colours.h"
 
 class ScreenStack : public BasicStack
 {
