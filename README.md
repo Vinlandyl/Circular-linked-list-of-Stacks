@@ -1,5 +1,5 @@
 # Circular-linked-list-of-Stacks
-Project to show a simple implementation of a doubly linked circular list of stacks in C++
+This project was made to show a simple implementation of a doubly linked circular list of stacks in C++
 
 To keep the project simple to visually test, the project has the following limitations for the user:
 1) The linked list is limited to 5 nodes (each node containing a stack)
